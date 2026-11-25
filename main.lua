@@ -5,7 +5,7 @@ done:
 [x] dashboard
 [ ] apps
 [ ] something like ssh
-[ ] app store, would need external hosting but github takes care of that wait i can host that
+[ ] app store, would need external hosting but github takes care of that
 
 also for ssh we need random string generation for passwords but thats ez af i can do it in one line watch this
 function randstr(str) local randstrtable = {};for i=1,#str do table.insert(1, randstrtable, string.char(math.random(33, 126))) end;return table.concat(randstrtable) end
@@ -39,6 +39,16 @@ local function quickMenu(title, options)
 		end
 	end
 end
+local function printDisks(numberOfDisks)
+	for i = 2, numberOfDisks + 1 do
+		print(
+			"/disk".. i .. ": " .. fs.getFreeSpace("/disk" .. i .. "/")
+			/ 1048576 ..
+			"MB out of " .. fs.getCapacity("/disk" .. i
+			.. "/") / 1048576 .. "MB"
+		)
+	end
+end
 
 local function diskStats()
 	-- 1048576 is 2^20
@@ -58,14 +68,7 @@ local function diskStats()
             "MB out of " .. fs.getCapacity("/disk") / 1048576 .. "MB"
 		)
 		if numberOfDisks > 1 then
-			for i = 2, numberOfDisks + 1 do
-				print(
-					"/disk".. i .. ": " .. fs.getFreeSpace("/disk" .. i .. "/")
-					/ 1048576 ..
-					"MB out of " .. fs.getCapacity("/disk" .. i
-					.. "/") / 1048576 .. "MB"
-				)
-			end
+			printDisks(numberOfDisks)
 		end
 	end
 end
@@ -103,7 +106,6 @@ local function serverSettings()
 			.. textutils.serialize(settings.get(sName))
 		end
 		textutils.pagedPrint(table.concat(tSettings, "\n"), y - 3)
-		return
 	elseif option == 2 then
 		local options = {
 			"Add script",
