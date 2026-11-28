@@ -20,6 +20,7 @@ local function throbber(len, theme, message)
 		end
 		return
 	end
+	message = message or "throbber:"
 	io.write(message .. " ")
 	term.setCursorBlink(false)
 	local seltheme = theme or "normal"
